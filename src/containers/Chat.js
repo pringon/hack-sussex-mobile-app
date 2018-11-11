@@ -39,7 +39,7 @@ class Chat extends Component {
     };
   }
 
-  generateGiftCard({ amount, value, brand }) {
+  generateGiftCard({ card_amount: amount, cost: { amount: value }, brands }) {
     return {
       id: this.giftCardCount++,
       brand,
@@ -76,12 +76,12 @@ class Chat extends Component {
     fetch(`http://dinuvld.pythonanywhere.com/?message=${encodeURIComponent(messages[0].text)}`, {
       method: "GET"
     })
-      .then(({ suggestion, answer, final } => {
+      .then(({ suggestion, answer, final }) => {
         this.appendBotMessage(answer);
         if(suggestion) {
           this.appendGiftCard(suggestion);
         }
-      }))
+      })
       .catch(console.log)
   }
 
@@ -114,14 +114,14 @@ class Chat extends Component {
           }}
           childrenHeight={this.state.giftCards.length && 100}
         >
-          { this.state.giftCards.length &&
-            <FlatList 
-              data={this.state.giftCards}
-              renderItem={this.renderCard}
-              keyExtractor={this.extractCardKey}
-              horizontal={true}
-            />
-          }
+        <FlatList 
+          data={this.state.giftCards}
+          renderItem={this.renderCard}
+          keyExtractor={this.extractCardKey}
+          horizontal={true}
+          
+        />
+            
         </GiftedChat>
         { Platform.OS === "android" ? <KeyboardSpacer /> : null }
       </View>
