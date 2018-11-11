@@ -39,12 +39,12 @@ class Chat extends Component {
     };
   }
 
-  generateGiftCard({ card_amount: amount, cost: { amount: value }, brands }) {
+  generateGiftCard(giftCard) {
     return {
       id: this.giftCardCount++,
-      brand,
-      amount,
-      value
+      brand: giftCard.brands,
+      amount: giftCard.card_amount,
+      value: giftCard.cost.amount
     };
   }
 
@@ -76,10 +76,14 @@ class Chat extends Component {
     fetch(`http://dinuvld.pythonanywhere.com/?message=${encodeURIComponent(messages[0].text)}`, {
       method: "GET"
     })
-      .then(({ suggestion, answer, final }) => {
+      .then((data) => {
+        const { suggestion, answer, final } = JSON.parse(data._bodyInit);
         this.appendBotMessage(answer);
-        if(suggestion) {
+        if(Object.keys(suggestion).length !== 0 && suggestion !== '') {
           this.appendGiftCard(suggestion);
+        }
+        if(Object.keys(final).length !== 0 && final !== '') {
+          this.appendGiftCard(final);
         }
       })
       .catch(console.log)
