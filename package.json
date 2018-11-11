@@ -14,7 +14,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
     "react-native-gifted-chat": "https://github.com/pringon/react-native-gifted-chat",
     "react-native-keyboard-spacer": "^0.4.1",
-    "socket.io-client": "^2.1.1"
+    "react-native-socketio": "^0.3.0"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0"
