@@ -4,9 +4,6 @@ import KeyboardSpacer from "react-native-keyboard-spacer";
 import { GiftedChat } from "react-native-gifted-chat";
 import GiftCard from "../components/GiftCard";
 
-import { messages } from "../data/messages";
-import { giftCards } from "../data/giftCards";
-
 class Chat extends Component {
   state = {
     messages: [],
@@ -27,13 +24,6 @@ class Chat extends Component {
     this.renderCard = this.renderCard.bind(this);
     this.generateGiftCard = this.generateGiftCard.bind(this);
     this.appendGiftCard = this.appendGiftCard.bind(this);
-  }
-
-  componentWillMount() {
-    this.setState({
-      messages,
-      giftCards
-    });
   }
 
   generateBotMessage(message) {
@@ -86,8 +76,7 @@ class Chat extends Component {
     fetch(`http://dinuvld.pythonanywhere.com/?message=${encodeURIComponent(messages[0].text)}`, {
       method: "GET"
     })
-      .then((data => {
-        const { suggestion, answer, final } = JSON.parse(data);
+      .then(({ suggestion, answer, final } => {
         this.appendBotMessage(answer);
         if(suggestion) {
           this.appendGiftCard(suggestion);
