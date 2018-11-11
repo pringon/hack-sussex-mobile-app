@@ -16,8 +16,12 @@ class Chat extends Component {
   constructor() {
     super();
 
+    this.messageCount = 4;
+
     this.onSend = this.onSend.bind(this);
     this.extractCardKey = this.extractCardKey.bind(this);
+    this.generateBotMessage = this.generateBotMessage.bind(this);
+    this.appendBotMessage = this.appendBotMessage.bind(this);
   }
 
   componentWillMount() {
@@ -27,10 +31,36 @@ class Chat extends Component {
     });
   }
 
+  generateBotMessage(message) {
+    return {
+      _id: this.messageCount++,
+      text: message,
+      createdAt: new Date(),
+      user: {
+        _id: 2,
+        name: "Bot",
+        avatar: "https://placeimg.com/140/140/any"
+      }
+    };
+  }
+
+  appendBotMessage(message) {
+    this.setState(prevState => ({
+      messages: GiftedChat.append(prevState.messages, this.generateBotMessage(message))
+    }));
+  }
+
   onSend(messages = []) {
     this.setState(prevState => ({
       messages: GiftedChat.append(prevState.messages, messages)
     }));
+    
+    console.log(encodeURI(messages[0].text));
+    fetch(`http://dinuvld.pythonanywhere.com/?message=${encodeURIComponent(messages[0].text)}`, {
+      method: "GET"
+    })
+      .then(console.log)
+      .catch(console.log)
   }
 
   extractCardKey(item, index) {
@@ -49,6 +79,7 @@ class Chat extends Component {
   }
 
   render() {
+
     return (
       <View style={{ flex: 1 }}>
         <GiftedChat
